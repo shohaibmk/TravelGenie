@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 function Hero() {
     return (
-        <div className='flex flex-col items-center justify-center gap-9 h-[65vh]' >
+        <div className='flex flex-col items-center justify-center gap-9 h-[65vh] mb-24' >
             <h1
                 className='font-extrabold text-[50px] text-center mt-16'
             >
