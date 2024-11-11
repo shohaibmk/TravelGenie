@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 export default function Footer() {
     return (
-        <div className='flex gap-2 justify-center items-stretch py-10'>
+        <div className='flex gap-2 justify-center items-center py-10'>
             <p className='text-lg'>Developed by Shohaib Mallick</p>
             <p className='text-lg'>/</p>
             <a href='https://github.com/shohaibmk'>

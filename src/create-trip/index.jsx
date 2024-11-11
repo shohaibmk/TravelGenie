@@ -16,7 +16,7 @@ function CreateTrip() {
             <p className='mt-3 text-gray-600 text-xl'>
                 Provide us basic information about your trip and let the AI plan your trip
             </p>
-            <div className='mt-20 flex flex-col gap-7'>
+            <div className='mt-10 flex flex-col gap-7'>
                 <div>
                     <h2 className='text-xl my-3 font-medium'>
                         Where would you like to go?
@@ -43,10 +43,10 @@ function CreateTrip() {
                     <h2 className='text-xl my-3 font-medium'>How much would you like to spend?</h2>
                     <div className="grid grid-cols-3 gap-5">
                         {SelectBudgetOptions.map((item, index) => (
-                            <div key={index} className="p-4 border rounded-lg hover:shadow-lg">
-                                <h2>{item.icon}</h2>
+                            <div key={index} className="p-2 border rounded-lg hover:shadow-lg">
+                                <h2 className="text-4xl">{item.icon}</h2>
                                 <h2 className="font-bold text-lg">{item.title}</h2>
-                                <h2>{item.desc}</h2>
+                                <h2 className="text-sm text-gray-600">{item.desc}</h2>
                             </div>
                         ))}
                     </div>

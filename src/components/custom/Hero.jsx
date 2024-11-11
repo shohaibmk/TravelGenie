@@ -11,7 +11,7 @@ function Hero() {
             >
                 <span className='text-[#4834DF]'>Plan your next trip</span> <br />with AI
             </h1>
-            <p className='text-xl text-gray-600 text-center'>Your Personal Travel Expert, Powered by AI!</p>
+            <p className='text-xl text-gray-600 text-center'>Your Personal Travel Expert</p>
             <Link to={'/create-trip'}>
                 <Button>Let's get started</Button>
             </Link>
