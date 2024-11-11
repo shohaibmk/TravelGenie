@@ -31,14 +31,15 @@ export const SelectTravelsList = [
 
 export const SelectBudgetOptions = [
     {
-        id: 1, title: 'Cheap',
+        id: 1, 
+        title: 'Cheap',
         desc: 'Stay conscious of costs',
         icon: '',
     },
     {
         id: 2,
         title: 'Moderate',
-        esc: 'Keep cost on the average side',
+        desc: 'Keep cost on the average side',
         icon: '',
     },
     {
@@ -48,7 +49,7 @@ export const SelectBudgetOptions = [
         icon: ''
     },
 ]
-I
+
 export const AI_PROMPT = 'Generate Travel Plan for Location : {location} for location for each day plan with best time to visit in JSON format.'
 
 
