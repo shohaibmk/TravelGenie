@@ -13,7 +13,7 @@ function Hero() {
             </h1>
             <p className='text-xl text-gray-600 text-center'>Your Personal Travel Expert, Powered by AI!</p>
             <Link to={'/create-trip'}>
-            <Button>Let's get started</Button>
+                <Button>Let's get started</Button>
             </Link>
         </div>
     )

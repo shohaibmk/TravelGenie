@@ -5,6 +5,8 @@ import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 function CreateTrip() {
 
     const [place, setPlace] = useState();
+    const [days,setDays] = useState();
+
     return (
         <div className='sm:px-10 md:px-32 lg:px-56 xl:px-20 px-5 mt-10'>
             <h2 className='font-bold text-3xl'>
@@ -32,7 +34,15 @@ function CreateTrip() {
                 <div>
                     <h2 className='text-xl my-3 font-medium'>
                         How many days would to like to stay there?                    </h2>
-                    <Input placeholder = {'Ex. 3'} type="number"/>
+                    <Input placeholder = {'Ex. 3'} type="number"
+                        selectProps={{
+                            days,
+                            onChange: (v) => {
+                                setDays(v);
+                                console.log("hello");
+                            }
+                        }}
+                    />
                     
                 </div>
             </div>
