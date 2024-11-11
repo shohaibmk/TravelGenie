@@ -24,6 +24,6 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Header/>
     <RouterProvider router={router}/>
-    {/* <Footer/> */}
+    <Footer/>
   </StrictMode>,
 )
