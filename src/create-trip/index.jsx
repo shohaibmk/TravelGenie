@@ -4,16 +4,39 @@ import { SelectBudgetOptions, SelectTravelsList } from "@/constants/options";
 import React, { useEffect, useState } from 'react'
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 
+/**
+ * 
+ * 
+ */
 function CreateTrip() {
 
     const [place, setPlace] = useState();
     const [formData, setFormData] = useState();
     const handleInputChange = (name, value) => {
+
+
         setFormData({
             ...formData,
             [name]: value
         })
     }
+
+    /**
+     * method to validate the form input
+     */
+const onGenerateTrip = ()=>{
+    if(formData?.noOfDays>=60 ){
+        console.log('invalid input');
+    }
+    else if(formData?.noOfDays<1){
+        console.log('invalid input');
+    }
+    else{
+        console.log(formData);
+    }
+
+
+}
 
     useEffect(() => {
         console.log(formData);
@@ -42,6 +65,7 @@ function CreateTrip() {
                                 handleInputChange('location', v);
                             },
                         }}
+                        className="border-red-500"
                     />
 
 
@@ -88,7 +112,7 @@ function CreateTrip() {
                     </div>
                 </div>
                 <div className="flex justify-center my-10">
-                    <Button>
+                    <Button onClick={onGenerateTrip}>
                         Plan My trip
                     </Button>
                 </div>
