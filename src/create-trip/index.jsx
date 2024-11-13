@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input"
 import { SelectBudgetOptions, SelectTravelsList } from "@/constants/options";
 import React, { useEffect, useState } from 'react'
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
+import { toast } from "sonner";
 
 /**
  * 
@@ -24,19 +25,19 @@ function CreateTrip() {
     /**
      * method to validate the form input
      */
-const onGenerateTrip = ()=>{
-    if(formData?.noOfDays>=60 ){
-        console.log('invalid input');
-    }
-    else if(formData?.noOfDays<1){
-        console.log('invalid input');
-    }
-    else{
-        console.log(formData);
-    }
+    const onGenerateTrip = () => {
+        if (formData?.noOfDays >= 60 || formData?.noOfDays < 1 || !formData?.location || !formData?.budget || !formData?.traveler) {
+            console.log('invalid input');
+            toast('Please enter complete information.');
+
+        }
+        else {
+            console.log('valid input');
+            console.log(formData);
+        }
 
 
-}
+    }
 
     useEffect(() => {
         console.log(formData);
@@ -83,7 +84,7 @@ const onGenerateTrip = ()=>{
                     <h2 className='text-xl my-3 font-medium'>How much would you like to spend?</h2>
                     <div className="grid grid-cols-3 gap-5">
                         {SelectBudgetOptions.map((item, index) => (
-                            <div key={index} className={`p-2 border cursor-pointer rounded-lg hover:shadow-lg
+                            <div key={index} className={`select-none p-2 border cursor-pointer rounded-lg hover:shadow-lg
                                 ${formData?.budget == item.title && 'shadow-xl ring-1 ring-black'}
                                 `}
                                 onClick={() => handleInputChange('budget', item.title)}
@@ -99,7 +100,7 @@ const onGenerateTrip = ()=>{
                     <h2 className='text-xl my-3 font-medium'>Who do you plan to go with?</h2>
                     <div className="grid grid-cols-3 gap-5">
                         {SelectTravelsList.map((item, index) => (
-                            <div key={index} className={`p-2 border cursor-pointer rounded-lg hover:shadow-lg
+                            <div key={index} className={`select-none p-2 border cursor-pointer rounded-lg hover:shadow-lg
                                 ${formData?.traveler == item.people && 'shadow-xl ring-1 ring-black'}
                                 `}
                                 onClick={() => handleInputChange('traveler', item.people)}
