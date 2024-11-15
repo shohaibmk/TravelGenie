@@ -1,43 +1,24 @@
-import React, { useState,useEffect } from 'react'
-import SignInButton from './SignInButton';
-
+import React from 'react'
+import { Button } from '../ui/button';
+import { Link } from 'react-router-dom';
 
 function Header() {
-
-  const [loggedIn, setLoggedin] = useState(false);
-
-
-
-
-  useEffect(() => {
-    const user = localStorage.getItem('user');
-    if(user){
-      console.log('user already logged in');
-      return;
-    }
-    else{
-      console.log('user needs to log in');
-    }
-
-}, [loggedIn])
-
-
-
-
-  const LogIn = () => {
-    
-    if(!loggedIn){
-      console.log('button lcicked User not logged in');
-      localStorage.setItem('user',true);
-      setLoggedin(true);
-
-    }
-  }
-
   return (
+    <div className='p-4 shadow-sm flex justify-between items-center'>
 
+      <a href='/'>
+        <div className='flex justify-center items-center gap-2'>
+        <img src="/logo.svg" alt="Logo" />
+        <h2 className='text-2xl'>Travel Genie</h2>
+        </div>
+      </a>
 
-   <SignInButton/>
+      <div>
+
+        <Button>Sign in</Button>
+
+      </div>
+    </div>
   )
 }
 
