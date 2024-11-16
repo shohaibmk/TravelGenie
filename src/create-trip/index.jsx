@@ -5,6 +5,15 @@ import { chatSession } from "@/service/AImodel";
 import React, { useEffect, useState } from 'react'
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import { toast } from "sonner";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import { FcGoogle } from "react-icons/fc";
 
 /**
  * 
@@ -14,6 +23,7 @@ function CreateTrip() {
 
     const [place, setPlace] = useState();
     const [formData, setFormData] = useState();
+    const [openDialog, setDialog] = useState(false);
     const handleInputChange = (name, value) => {
 
 
@@ -27,12 +37,25 @@ function CreateTrip() {
      * method to validate the form input
      */
     const onGenerateTrip = async () => {
+
+        const user = localStorage.getItem('user');
+
+        if (!user) {                            //not logged in
+            setDialog(true);
+            console.log('show dialog true');
+        }
+
+
+
         if (formData?.noOfDays >= 60 || formData?.noOfDays < 1 || !formData?.location || !formData?.budget || !formData?.traveler) {
             console.log('invalid input');
             toast('Please enter complete information.');
 
         }
         else {                                                                                              //valid input
+
+
+
             const FINAL_AI_PROMPT = AI_PROMPT
                 .replace('{location}', formData?.location.label)
                 .replace('{noOfDays}', formData?.noOfDays)
@@ -51,7 +74,8 @@ function CreateTrip() {
 
     useEffect(() => {
         console.log(formData);
-    }, [formData])
+        console.log(`open dialog value: ${openDialog}`);
+    }, [formData, openDialog])
 
     return (
         <div className='sm:px-10 md:px-32 lg:px-44 xl:px-56 2xl:px-56 px-5 mt-10'>
@@ -128,6 +152,22 @@ function CreateTrip() {
                     </Button>
                 </div>
             </div>
+            <Dialog open={openDialog}>
+                <DialogContent>
+                    <DialogHeader>
+
+                        <DialogTitle></DialogTitle>
+                        {/* <DialogDescription>
+                            <img src='/logo.svg' />
+                            <h2 className="font-bold text-lg mt-7">Sign In With Google</h2>
+                            <p>Sign in  to the App with Google Authentication Securely</p>
+                            <Button className="w-full mt-5 flex gap-4 items-center"><FcGoogle className="w-10 h-10" />Sign In With Google</Button>
+                        </DialogDescription> */}
+                    </DialogHeader>
+                </DialogContent>
+            </Dialog>
+
+
         </div>
     )
 }
