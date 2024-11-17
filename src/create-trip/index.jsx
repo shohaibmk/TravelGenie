@@ -26,7 +26,7 @@ function CreateTrip() {
     const [place, setPlace] = useState();
     const [formData, setFormData] = useState();
     const [openDialog, setDialog] = useState(false);
-    const[tripPlanned, setTripPlanned] = useState(false);
+    const[tripPlanned, setTripPlanned] = useState("not planned");  // "not planned" "planning" "planned"
 
     const handleInputChange = (name, value) => {
 
@@ -71,7 +71,7 @@ function CreateTrip() {
                 setDialog(true);
                 console.log('show dialog true');
             }
-
+            setTripPlanned('planning')
             const FINAL_AI_PROMPT = AI_PROMPT
                 .replace('{location}', formData?.location.label)
                 .replace('{noOfDays}', formData?.noOfDays)
@@ -81,9 +81,9 @@ function CreateTrip() {
 
             const result = await chatSession.sendMessage(FINAL_AI_PROMPT);
             sessionStorage.setItem('tripDetails',result?.response?.text());
-            setTripPlanned(true)
-            console.log(result?.response?.text());
-            sessionStorage.setItem('tripDetails', JSON.stringify(result))
+            console.log(JSON.parse(result?.response?.text()))
+            setTripPlanned("planned")
+
         }
 
 
@@ -112,6 +112,15 @@ function CreateTrip() {
             console.error(err);
         });
     }
+
+    useEffect(()=>{
+        if(tripPlanned == 'planning') {
+            console.log("trip is being planned by genie");
+        }
+        else if(tripPlanned == 'planned') {
+            console.log("trip has been planned by genie");
+        }
+    }),[tripPlanned]
 
     useEffect(() => {
         console.log(formData);
