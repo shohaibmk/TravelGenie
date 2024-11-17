@@ -14,6 +14,8 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { FcGoogle } from "react-icons/fc";
+import { useGoogleLogin } from "@react-oauth/google";
+import axios from 'axios';
 
 /**
  * 
@@ -24,6 +26,8 @@ function CreateTrip() {
     const [place, setPlace] = useState();
     const [formData, setFormData] = useState();
     const [openDialog, setDialog] = useState(false);
+    const[tripPlanned, setTripPlanned] = useState(false);
+
     const handleInputChange = (name, value) => {
 
 
@@ -34,16 +38,23 @@ function CreateTrip() {
     }
 
     /**
+     * Google Authenticator
+     */
+    const login = useGoogleLogin({
+        onSuccess: (codeResponse) => 
+            getUserProfile(codeResponse)
+        ,
+        onError: (errorResponse) => {
+            console.log(`Error: ${errorResponse}`)
+        },
+    })
+
+    /**
      * method to validate the form input
      */
     const onGenerateTrip = async () => {
 
-        const user = localStorage.getItem('user');
 
-        if (!user) {                            //not logged in
-            setDialog(true);
-            console.log('show dialog true');
-        }
 
 
 
@@ -54,7 +65,12 @@ function CreateTrip() {
         }
         else {                                                                                              //valid input
 
+            const user = localStorage.getItem('user');
 
+            if (!user) {                            //not logged in
+                setDialog(true);
+                console.log('show dialog true');
+            }
 
             const FINAL_AI_PROMPT = AI_PROMPT
                 .replace('{location}', formData?.location.label)
@@ -64,12 +80,37 @@ function CreateTrip() {
             console.log(FINAL_AI_PROMPT);
 
             const result = await chatSession.sendMessage(FINAL_AI_PROMPT);
-
+            sessionStorage.setItem('tripDetails',result?.response?.text());
+            setTripPlanned(true)
             console.log(result?.response?.text());
             sessionStorage.setItem('tripDetails', JSON.stringify(result))
         }
 
 
+    }
+
+
+/**
+ * method to get user info based on user access token
+ */
+    const getUserProfile = (tokenInfo) => {            
+        console.log(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${tokenInfo?.access_token}`);
+        axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${tokenInfo?.access_token}`, {
+            headers: {
+                Authorization: `Bearer ${tokenInfo?.access_token}`,
+                Accept: 'Application/json'
+            }
+        }).then((resp) => {
+            localStorage.setItem('user', JSON.stringify(resp.data));
+
+            setDialog(false);
+            console.log("response:\n");
+
+            console.log(resp);
+        }).catch((err) => {
+            console.error("error:\n");
+            console.error(err);
+        });
     }
 
     useEffect(() => {
@@ -153,22 +194,48 @@ function CreateTrip() {
                 </div>
             </div>
 
-            <Dialog open={openDialog}>
+            {/* <Dialog open={openDialog}>
                 <DialogContent>
                     <DialogHeader>
                         <DialogTitle></DialogTitle>
+
                     </DialogHeader>
                     <div className="select-none">
                         <img src="/logo.svg" alt="Logo" />
                         <h2 className="font-bold text-lg mt-7">Sign In With Google</h2>
                         <p>Sign in to the App with Google Authentication Securely</p>
                         <Button className="w-full mt-5 flex gap-4 items-center">
-                            <FcGoogle className="w-10 h-10" />
+                            <FcGoogle />
                             Sign In With Google
                         </Button>
                     </div>
                 </DialogContent>
-                <DialogDescription></DialogDescription>
+
+            </Dialog> */}
+            <Dialog open={openDialog} onOpenChange={setDialog}>
+
+                <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                        <DialogTitle className="font-bold text-lg">Sign In With Google</DialogTitle>
+                        <DialogDescription>
+                            Sign in to the App with Google Authentication Securely to view your plan
+                            <Button className="w-full mt-5 flex gap-3 items-center" onClick={login}>
+                                <FcGoogle className="w-7 h-7" />
+                                Sign In With Google
+                            </Button>
+                        </DialogDescription>
+                    </DialogHeader>
+                    {/* <div className="select-none"> */}
+                    {/* <img src="/logo.svg" alt="Logo" /> */}
+                    {/* <h2 className="font-bold text-lg mt-7">Sign In With Google</h2> */}
+                    {/* <p>Sign in to the App with Google Authentication Securely</p> */}
+                    {/* <Button className="w-full mt-5 flex gap-4 items-center">
+                            <FcGoogle className="w-7 h-7"/>
+                            Sign In With Google
+                        </Button> */}
+                    {/* </div> */}
+
+                </DialogContent>
             </Dialog>
 
 
