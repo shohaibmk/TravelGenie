@@ -26,7 +26,7 @@ function CreateTrip() {
     const [place, setPlace] = useState();
     const [formData, setFormData] = useState();
     const [openDialog, setDialog] = useState(false);
-    const[tripPlanned, setTripPlanned] = useState("not planned");  // "not planned" "planning" "planned"
+    const [tripPlanned, setTripPlanned] = useState("not planned");  // "not planned" "planning" "planned"
 
     const handleInputChange = (name, value) => {
 
@@ -41,7 +41,7 @@ function CreateTrip() {
      * Google Authenticator
      */
     const login = useGoogleLogin({
-        onSuccess: (codeResponse) => 
+        onSuccess: (codeResponse) =>
             getUserProfile(codeResponse)
         ,
         onError: (errorResponse) => {
@@ -80,7 +80,7 @@ function CreateTrip() {
             console.log(FINAL_AI_PROMPT);
 
             const result = await chatSession.sendMessage(FINAL_AI_PROMPT);
-            sessionStorage.setItem('tripDetails',result?.response?.text());
+            sessionStorage.setItem('tripDetails', result?.response?.text());
             console.log(JSON.parse(result?.response?.text()))
             setTripPlanned("planned")
 
@@ -90,10 +90,10 @@ function CreateTrip() {
     }
 
 
-/**
- * method to get user info based on user access token
- */
-    const getUserProfile = (tokenInfo) => {            
+    /**
+     * method to get user info based on user access token
+     */
+    const getUserProfile = (tokenInfo) => {
         console.log(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${tokenInfo?.access_token}`);
         axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${tokenInfo?.access_token}`, {
             headers: {
@@ -113,19 +113,24 @@ function CreateTrip() {
         });
     }
 
-    useEffect(()=>{
-        if(tripPlanned == 'planning') {
+    useEffect(() => {
+        if (tripPlanned == 'planning') {
             console.log("trip is being planned by genie");
         }
-        else if(tripPlanned == 'planned') {
+        else if (tripPlanned == 'planned') {
             console.log("trip has been planned by genie");
         }
-    }),[tripPlanned]
+    }), [tripPlanned]
 
     useEffect(() => {
         console.log(formData);
+
+    }, [formData])
+
+    useEffect(() => {
+
         console.log(`open dialog value: ${openDialog}`);
-    }, [formData, openDialog])
+    }, [openDialog])
 
     return (
         <div className='sm:px-10 md:px-32 lg:px-44 xl:px-56 2xl:px-56 px-5 mt-10'>
@@ -203,24 +208,7 @@ function CreateTrip() {
                 </div>
             </div>
 
-            {/* <Dialog open={openDialog}>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle></DialogTitle>
 
-                    </DialogHeader>
-                    <div className="select-none">
-                        <img src="/logo.svg" alt="Logo" />
-                        <h2 className="font-bold text-lg mt-7">Sign In With Google</h2>
-                        <p>Sign in to the App with Google Authentication Securely</p>
-                        <Button className="w-full mt-5 flex gap-4 items-center">
-                            <FcGoogle />
-                            Sign In With Google
-                        </Button>
-                    </div>
-                </DialogContent>
-
-            </Dialog> */}
             <Dialog open={openDialog} onOpenChange={setDialog}>
 
                 <DialogContent className="sm:max-w-[425px]">
@@ -234,15 +222,7 @@ function CreateTrip() {
                             </Button>
                         </DialogDescription>
                     </DialogHeader>
-                    {/* <div className="select-none"> */}
-                    {/* <img src="/logo.svg" alt="Logo" /> */}
-                    {/* <h2 className="font-bold text-lg mt-7">Sign In With Google</h2> */}
-                    {/* <p>Sign in to the App with Google Authentication Securely</p> */}
-                    {/* <Button className="w-full mt-5 flex gap-4 items-center">
-                            <FcGoogle className="w-7 h-7"/>
-                            Sign In With Google
-                        </Button> */}
-                    {/* </div> */}
+
 
                 </DialogContent>
             </Dialog>
