@@ -27,6 +27,7 @@ function CreateTrip() {
     const [formData, setFormData] = useState();
     const [openDialog, setDialog] = useState(false);
     const [tripPlanned, setTripPlanned] = useState("not planned");  // "not planned" "planning" "planned"
+    const loggedIn = false
 
     const handleInputChange = (name, value) => {
 
@@ -65,6 +66,7 @@ function CreateTrip() {
         }
         else {                                                                                              //valid input
 
+            sessionStorage.setItem('formData', JSON.stringify(formData));
             const user = localStorage.getItem('user');
 
             if (!user) {                            //not logged in
@@ -80,6 +82,10 @@ function CreateTrip() {
             console.log(FINAL_AI_PROMPT);
 
             const result = await chatSession.sendMessage(FINAL_AI_PROMPT);
+            console.log(`results.tripDetails: `,JSON.parse(result?.response?.text()).tripDetails);
+            console.log(`final formData:`,JSON.parse(sessionStorage.getItem('formData')));
+        
+            sessionStorage.setItem('formData', formData);
             sessionStorage.setItem('tripDetails', result?.response?.text());
             console.log(JSON.parse(result?.response?.text()))
             setTripPlanned("planned")
@@ -123,7 +129,7 @@ function CreateTrip() {
     }), [tripPlanned]
 
     useEffect(() => {
-        console.log(formData);
+        // console.log(formData);
 
     }, [formData])
 
