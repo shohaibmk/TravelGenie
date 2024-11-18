@@ -76,22 +76,31 @@ function CreateTrip() {
             setTripPlanned('planning')
             const FINAL_AI_PROMPT = AI_PROMPT
                 .replace('{location}', formData?.location.label)
-                .replace('{noOfDays}', formData?.noOfDays)
+                .replaceAll('{noOfDays}', formData?.noOfDays)
                 .replace('{traveler}', formData?.traveler)
                 .replace('{budget}', formData?.budget)
             console.log(FINAL_AI_PROMPT);
 
             const result = await chatSession.sendMessage(FINAL_AI_PROMPT);
             // console.log(`results.tripDetails: `,JSON.parse(result?.response?.text()));
-            console.log(`final formData:`,JSON.parse(sessionStorage.getItem('formData')));
+            // console.log(`final formData:`,JSON.parse(sessionStorage.getItem('formData')));
             const finalFormData = JSON.parse(sessionStorage.getItem('formData'));
             const trip = JSON.parse(result?.response?.text()).tripDetails;
+            console.log(trip);
+            console.log(finalFormData);
+
+            console.log("finalFormData.budget == trip.budget",finalFormData.budget == trip.budget);
+            console.log("finalFormData.location.label == trip.destination",finalFormData.location.label == trip.destination);
+            console.log("finalFormData.traveler == trip.travelers",finalFormData.traveler == trip.travelers);
+            console.log("finalFormData.traveler",finalFormData.traveler.split(' ')[0])
+            console.log("trip.travelers",trip.travelers.split(' ')[0]);
+            console.log("finalFormData.noOfDays == trip.duration",finalFormData.noOfDays == trip.duration);
             // sessionStorage.setItem('formData', formData);
             if(finalFormData.budget == trip.budget && finalFormData.location.label == trip.destination && finalFormData.noOfDays == trip.duration && finalFormData.noOfHours == trip.duration && finalFormData.traveler == trip.travelers){
                 console.log('\n\n\n\n\n\nresults match the final request check login and redirect\n\n\n\n\n\n');
             }
             sessionStorage.setItem('tripDetails', result?.response?.text());
-            console.log(JSON.parse(result?.response?.text()))
+            // console.log(JSON.parse(result?.response?.text()))
 
             setTripPlanned("planned")
 
@@ -134,13 +143,13 @@ function CreateTrip() {
     }), [tripPlanned]
 
     useEffect(() => {
-        console.log("\n\n\nformdata updated: ",formData);
+        console.log("\n\n\nform data updated: ",formData);
 
     }, [formData])
 
     useEffect(() => {
 
-        console.log(`open dialog value: ${openDialog}`);
+        console.log(`open dialog value: ${openDialog}\nGenie status: ${tripPlanned}`);
     }, [openDialog])
 
     return (
