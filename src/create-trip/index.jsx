@@ -27,7 +27,6 @@ function CreateTrip() {
     const [formData, setFormData] = useState();
     const [openDialog, setDialog] = useState(false);
     const [tripPlanned, setTripPlanned] = useState("not planned");  // "not planned" "planning" "planned"
-    const loggedIn = false
 
     const handleInputChange = (name, value) => {
 
@@ -56,9 +55,6 @@ function CreateTrip() {
     const onGenerateTrip = async () => {
 
 
-
-
-
         if (formData?.noOfDays >= 60 || formData?.noOfDays < 1 || !formData?.location || !formData?.budget || !formData?.traveler) {
             console.log('invalid input');
             toast('Please enter complete information.');
@@ -73,36 +69,28 @@ function CreateTrip() {
                 setDialog(true);
                 console.log('show dialog true');
             }
-            setTripPlanned('planning')
-            const FINAL_AI_PROMPT = AI_PROMPT
-                .replace('{location}', formData?.location.label)
-                .replaceAll('{noOfDays}', formData?.noOfDays)
-                .replace('{traveler}', formData?.traveler)
-                .replace('{budget}', formData?.budget)
-            console.log(FINAL_AI_PROMPT);
+            else {                                   //logged in                    
+                setTripPlanned('planning')
+                const FINAL_AI_PROMPT = AI_PROMPT
+                    .replace('{location}', formData?.location.label)
+                    .replaceAll('{noOfDays}', formData?.noOfDays)
+                    .replace('{traveler}', formData?.traveler)
+                    .replace('{budget}', formData?.budget)
+                console.log(FINAL_AI_PROMPT);
 
-            const result = await chatSession.sendMessage(FINAL_AI_PROMPT);
-            // console.log(`results.tripDetails: `,JSON.parse(result?.response?.text()));
-            // console.log(`final formData:`,JSON.parse(sessionStorage.getItem('formData')));
-            const finalFormData = JSON.parse(sessionStorage.getItem('formData'));
-            const trip = JSON.parse(result?.response?.text()).tripDetails;
-            console.log(trip);
-            console.log(finalFormData);
+                const result = await chatSession.sendMessage(FINAL_AI_PROMPT);
+                // console.log(`results.tripDetails: `,JSON.parse(result?.response?.text()));
+                // console.log(`final formData:`,JSON.parse(sessionStorage.getItem('formData')));
+                const finalFormData = JSON.parse(sessionStorage.getItem('formData'));
+                const trip = JSON.parse(result?.response?.text()).tripDetails;
+                console.log(trip);
+                console.log(finalFormData);
+                setTripPlanned("planned")
 
-            console.log("finalFormData.budget == trip.budget",finalFormData.budget == trip.budget);
-            console.log("finalFormData.location.label == trip.destination",finalFormData.location.label == trip.destination);
-            console.log("finalFormData.traveler == trip.travelers",finalFormData.traveler == trip.travelers);
-            console.log("finalFormData.traveler",finalFormData.traveler.split(' ')[0])
-            console.log("trip.travelers",trip.travelers.split(' ')[0]);
-            console.log("finalFormData.noOfDays == trip.duration",finalFormData.noOfDays == trip.duration);
-            // sessionStorage.setItem('formData', formData);
-            if(finalFormData.budget == trip.budget && finalFormData.location.label == trip.destination && finalFormData.noOfDays == trip.duration && finalFormData.noOfHours == trip.duration && finalFormData.traveler == trip.travelers){
-                console.log('\n\n\n\n\n\nresults match the final request check login and redirect\n\n\n\n\n\n');
             }
-            sessionStorage.setItem('tripDetails', result?.response?.text());
-            // console.log(JSON.parse(result?.response?.text()))
 
-            setTripPlanned("planned")
+
+
 
         }
 
@@ -127,6 +115,7 @@ function CreateTrip() {
             console.log("response:\n");
 
             console.log(resp);
+            onGenerateTrip();
         }).catch((err) => {
             console.error("error:\n");
             console.error(err);
@@ -143,13 +132,13 @@ function CreateTrip() {
     }), [tripPlanned]
 
     useEffect(() => {
-        console.log("\n\n\nform data updated: ",formData);
+        console.log("\n\n\nform data updated: ", formData);
 
     }, [formData])
 
     useEffect(() => {
 
-        console.log(`open dialog value: ${openDialog}\nGenie status: ${tripPlanned}`);
+        console.log(`open dialog value: ${openDialog}`);
     }, [openDialog])
 
     return (
