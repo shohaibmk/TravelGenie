@@ -78,13 +78,10 @@ function CreateTrip() {
                     .replace('{budget}', formData?.budget)
                 console.log(FINAL_AI_PROMPT);
 
-                const result = await chatSession.sendMessage(FINAL_AI_PROMPT);
-                // console.log(`results.tripDetails: `,JSON.parse(result?.response?.text()));
-                // console.log(`final formData:`,JSON.parse(sessionStorage.getItem('formData')));
-                // const finalFormData = JSON.parse(sessionStorage.getItem('formData'));
+                const result = await chatSession.sendMessage(FINAL_AI_PROMPT);              //Generation of trip with Gemini
                 const trip = JSON.parse(result?.response?.text());
                 console.log(trip);
-                // console.log(finalFormData);
+
                 setTripPlanned("planned")
 
             }
@@ -102,6 +99,7 @@ function CreateTrip() {
      * method to get user info based on user access token
      */
     const getUserProfile = (tokenInfo) => {
+        console.log(`User info: `,tokenInfo);
         console.log(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${tokenInfo?.access_token}`);
         axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${tokenInfo?.access_token}`, {
             headers: {
