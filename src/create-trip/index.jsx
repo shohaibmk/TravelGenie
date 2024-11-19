@@ -81,10 +81,10 @@ function CreateTrip() {
                 const result = await chatSession.sendMessage(FINAL_AI_PROMPT);
                 // console.log(`results.tripDetails: `,JSON.parse(result?.response?.text()));
                 // console.log(`final formData:`,JSON.parse(sessionStorage.getItem('formData')));
-                const finalFormData = JSON.parse(sessionStorage.getItem('formData'));
-                const trip = JSON.parse(result?.response?.text()).tripDetails;
+                // const finalFormData = JSON.parse(sessionStorage.getItem('formData'));
+                const trip = JSON.parse(result?.response?.text());
                 console.log(trip);
-                console.log(finalFormData);
+                // console.log(finalFormData);
                 setTripPlanned("planned")
 
             }
