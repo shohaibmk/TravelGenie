@@ -16,6 +16,8 @@ import {
 import { FcGoogle } from "react-icons/fc";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from 'axios';
+import LoginDialog from "./LoginDialog";
+import { LogIn } from "lucide-react";
 
 /**
  * 
@@ -215,8 +217,8 @@ function CreateTrip() {
                 </div>
             </div>
 
-
-            <Dialog open={openDialog} onOpenChange={setDialog}>
+            <LoginDialog openDialog={openDialog} setDialog={setDialog} login={login} />
+            {/* <Dialog open={openDialog} onOpenChange={setDialog}>
 
                 <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>
@@ -232,7 +234,7 @@ function CreateTrip() {
 
 
                 </DialogContent>
-            </Dialog>
+            </Dialog> */}
 
 
         </div>
